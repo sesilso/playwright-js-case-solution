@@ -5,10 +5,16 @@ export class ProductsPage {
         this.products = page.locator('.inventory_item');
         this.productNameElement = '.inventory_item_name';
         this.addToCartButton = 'button.btn_inventory';
+        this.shoppingCartLink = page.locator('#shopping_cart_container');
     }
 
 async getTitle(){
     return await this.pageTitle.innerText();
+}
+
+async goToShoppingCart(){
+    await this.shoppingCartLink.click();
+    await this.page.waitForURL(/cart/);
 }
 
 async addProductToCart(productName){
