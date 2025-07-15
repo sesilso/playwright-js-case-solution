@@ -1,0 +1,21 @@
+{
+  "name": "playwright-js-case-solution",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test:dev": "cross-env ENV=dev npx playwright test",
+    "test:staging": "cross-env ENV=staging npx playwright test",
+    "test:prod": "cross-env ENV=prod npx playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@playwright/test": "^1.54.1",
+    "cross-env": "^7.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.0"
+  }
+}
