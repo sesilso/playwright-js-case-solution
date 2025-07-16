@@ -1,4 +1,4 @@
-export class CheckoutPage {
+export class CheckoutInformationPage {
     constructor(page){
         this.page= page;
         this.firstNameInput= page.locator('#first-name');
@@ -15,6 +15,7 @@ async fillInformation(firstName, lastName, postalCode){
 
 async continue(){
     await this.continueButton.click();
+    await this.page.waitForURL(/checkout-step-two/);
 }
 
 async fillInformationAndContinue(firstName, lastName, postalCode){

@@ -19,11 +19,9 @@ async goToShoppingCart(){
 
 async addProductToCart(productName){
     const count = await this.products.count();
-
     for(let i=0;i<count; i++){
         const product = this.products.nth(i);
         const name = await product.locator(this.productNameElement).innerText();
-
         if(name.trim() === productName){
             await product.locator(this.addToCartButton).click();
             break;
