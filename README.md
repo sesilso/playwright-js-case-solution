@@ -1,4 +1,4 @@
-# QA Automation Engineer - Challenge
+# QA Automation Engineer - Challenge (Sergio Silva)
 
 #  Description
 This project contains automated tests using playwright to validate application funcionality
@@ -45,6 +45,8 @@ npx playwright test --project=firefox
 
 # Reports
 - Test report is generated inside playwright-report folder
+
+
 
 
 **Author:** Sergio Silva 
