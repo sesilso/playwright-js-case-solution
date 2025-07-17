@@ -9,4 +9,12 @@ export class FormatUtils{
         }
         return amount;
     }
+
+    static sumAndRound(numbers){
+        let total = 0;
+        for(let number of numbers){
+            total += number;
+        }
+        return Math.round(total*100)/100;
+    }
 }

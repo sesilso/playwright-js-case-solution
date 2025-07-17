@@ -9,7 +9,7 @@ import { CheckoutOverviewPage } from '../../pages/checkout/CheckoutOverviewPage'
 import { CheckoutCompletePage } from '../../pages/checkout/CheckoutCompletePage';
 
 
-test.describe('Purchase Tests', ()=>{
+test.describe('Purchase Operation Tests', ()=>{
     
     //Scenario 1: The Full "Happy Path" Purchase Flow
     test('Sucessful purchase operation', async ({page}) =>{
@@ -26,7 +26,7 @@ test.describe('Purchase Tests', ()=>{
         expect(await productsPage.isUserLoggedIn()).toBe(true);
         
         const products = ['Sauce Labs Backpack', 'Sauce Labs Fleece Jacket'];
-        await productsPage.addProductsToCart(products);        
+        await productsPage.addProductsToCartByNames(products);        
         await productsPage.goToShoppingCart();
         // Verify that both items are in the cart.
         expect(await shoppingCartPage.areAllItemsAddedToCart(products)).toBe(true);
@@ -41,6 +41,28 @@ test.describe('Purchase Tests', ()=>{
         // Verify that the confirmation page is displayed 
         expect(await checkoutCompletePage.getCompletedMessage()).toBe('Thank you for your order!');
  
+    })
+
+    // Scenario 4: Data-Driven Cart Calculation
+    test('Item total matches sum of product prices', async ({page}) =>{
+        const loginPage = new LoginPage(page);
+        const productsPage = new ProductsPage(page);
+        const shoppingCartPage = new ShoppingCartPage(page);
+        const checkoutInformatioPage = new CheckoutInformationPage(page);
+        const checkoutOverviewPage = new CheckoutOverviewPage(page);
+
+        await loginPage.initalPage();
+        await loginPage.login(standardUser.username, standardUser.password);
+        const sumOfPrices = await productsPage.calculateSumExpected();
+        await productsPage.addAllAvailableProductsToCart();
+        await productsPage.goToShoppingCart();
+        await shoppingCartPage.goToCheckout();
+        await checkoutInformatioPage.fillInformation(faker.person.firstName(),faker.person.lastName(), faker.location.zipCode());
+        await checkoutInformatioPage.continue();
+
+        // Verify that the "Item total" displayed on the page exactly matches the sum expected
+        expect(await checkoutOverviewPage.getSubtotal()).toBe(sumOfPrices);
+
     })
 
 })

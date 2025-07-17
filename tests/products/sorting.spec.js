@@ -22,7 +22,7 @@ test.describe('ProductsS Tests', ()=>{
         expect(firstProductItem.name).toBe('Sauce Labs Fleece Jacket');
         expect(firstProductItem.price).toBe('$49.99');
 
-        await productsPage.addProductItemToCart('Sauce Labs Fleece Jacket');
+        await productsPage.addProductItemToCartByName('Sauce Labs Fleece Jacket');
 
         // Verify that the cart icon correctly shows a "1"
         expect(await productsPage.getShoppingCartProductsCount()).toBe('1'); 

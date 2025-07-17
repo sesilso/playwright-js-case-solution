@@ -33,5 +33,9 @@ async finishPurchase(){
     await this.page.waitForURL(/checkout-complete/);
 }
 
+async getSubtotal(){
+    return FormatUtils.parsePriceString(await this.getDisplayedSubtotal());
+}
+
 
 }

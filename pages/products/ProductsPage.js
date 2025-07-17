@@ -1,3 +1,4 @@
+import { FormatUtils } from "../../utils/formatUtils";
 import { Product } from "../models/Product";
 
 export class ProductsPage {
@@ -29,7 +30,7 @@ async goToShoppingCart(){
     await this.page.waitForURL(/cart/);
 }
 
-async addProductItemToCart(productName){
+async addProductItemToCartByName(productName){
     const count = await this.products.count();
     for(let i=0;i<count; i++){
         const product = this.products.nth(i);
@@ -41,9 +42,27 @@ async addProductItemToCart(productName){
     }
 }
 
-async addProductsToCart(products){
+async addProductItemToCartByPosition(ProductPosition){
+    const count = await this.products.count();
+    if(ProductPosition>0 && ProductPosition <count){
+        const product = this.products.nth(ProductPosition);
+        await product.locator(this.addToCartButton).click();
+    }else{
+        throw new Error('Invalid position based on products list size.');
+    }    
+}
+
+async addAllAvailableProductsToCart(){
+    const count = await this.products.count();
+    for(let i=0;i<count; i++){
+        const product = this.products.nth(i);
+        await product.locator(this.addToCartButton).click();
+    }
+}
+
+async addProductsToCartByNames(products){
     for(let product of products){
-        await this.addProductItemToCart(product);
+        await this.addProductItemToCartByName(product);
     }
 }
 
@@ -74,7 +93,7 @@ async getProductItemByPosition(pos){
     if(pos>=0 && pos<product.length){
         return product[pos];
     }else{
-        throw new Error('Invalid position based on product list size.');
+        throw new Error('Invalid position based on products list size.');
     }
 }
 
@@ -84,6 +103,15 @@ async getFirstAvaibleProductItem(){
 
 async getShoppingCartProductsCount(){
     return await this.shoppingCartCount.innerText();
+}
+
+async calculateSumExpected(){
+    const products = await this.getAllProduct();
+    const prices = [];
+    for(let product of products){
+        prices.push(FormatUtils.parsePriceString(product.price));
+    }
+    return FormatUtils.sumAndRound(prices);
 }
 
 }

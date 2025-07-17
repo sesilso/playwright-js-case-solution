@@ -13,11 +13,36 @@ if(!process.env.BASE_URL){
 export default defineConfig({
     use:{
         baseURL: process.env.BASE_URL,
-        headless: false,
+        headless: true,
         screenshot: 'only-on-failure',
         video: 'retain-on-failure',
     },
+
     timeout: 30000,
-    retries: 0
+    retries: 0,
+
+    reporter:[
+      ['list'],
+      ['html', {outputFolder: 'playwright-report', open: 'never'}]
+    ],
+
+    workers: 2,
+    fullyParallel: true,
+
+    projects: [
+      {
+        name: 'chromium',
+        use: {browserName: 'chromium'}
+      },
+      {
+        name: 'firefox',
+        use: {browserName: 'firefox'}
+      },
+      {
+        name: 'webkit',
+        use: {browserName: 'webkit'}
+      }
+    ]
+
 });
 
