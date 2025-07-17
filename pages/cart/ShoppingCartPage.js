@@ -18,6 +18,19 @@ async isProductItemInCart(productName){
     return false;
 }
 
+async areAllItemsAddedToCart(products){
+    const notFound = [];
+    for(let product of products){
+        if(!(await this.isProductItemInCart(product))){
+            notFound.push(product);
+        }
+    }
+    if(notFound.length>0){
+        throw new Error('The following items are not included in cart : '+ notFound.join(', '));
+    }
+    return true;
+}
+
 
 async goToCheckout(){
     await this.checkoutButton.click();

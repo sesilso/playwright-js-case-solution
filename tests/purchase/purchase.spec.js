@@ -13,7 +13,6 @@ test.describe('Purchase Tests', ()=>{
     
     //Scenario 1: The Full "Happy Path" Purchase Flow
     test('Sucessful purchase operation', async ({page}) =>{
-
         const loginPage = new LoginPage(page);
         const productsPage = new ProductsPage(page);
         const shoppingCartPage = new ShoppingCartPage(page);
@@ -24,18 +23,13 @@ test.describe('Purchase Tests', ()=>{
         await loginPage.initalPage();
         await loginPage.login(standardUser.username, standardUser.password);
         // Verify that the user is successfully logged in and is on the products page.
-        await expect(page).toHaveURL(/inventory/);
-        expect(await productsPage.getTitle()).toBe('Products');
+        expect(await productsPage.isUserLoggedIn()).toBe(true);
         
         const products = ['Sauce Labs Backpack', 'Sauce Labs Fleece Jacket'];
-        for(let product of products){
-            await productsPage.addProductToCart(product);
-        }
+        await productsPage.addProductsToCart(products);        
         await productsPage.goToShoppingCart();
         // Verify that both items are in the cart.
-        for(let product of products){
-            expect(await shoppingCartPage.isProductItemInCart(product)).toBe(true);
-        }
+        expect(await shoppingCartPage.areAllItemsAddedToCart(products)).toBe(true);
 
         await shoppingCartPage.goToCheckout();
         await checkoutInformatioPage.fillInformation(faker.person.firstName(),faker.person.lastName(), faker.location.zipCode());
